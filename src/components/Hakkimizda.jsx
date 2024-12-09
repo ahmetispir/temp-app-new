@@ -6,7 +6,7 @@ const Hakkimizda = () => {
 
   useEffect(() => {
   
-    fetch(`/api/list?type=about`)
+    fetch("https://temp-app-xi.vercel.app/api/list?type=about")
     .then((res) => res.json())
     .then((data) => setData(data))
     .catch((err) => console.error("Veri alınamadı:", err));

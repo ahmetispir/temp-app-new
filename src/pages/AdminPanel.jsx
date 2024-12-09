@@ -21,22 +21,22 @@ const AdminPanel = () => {
 
   // Backend'den verileri çekme
   useEffect(() => {
-    fetch("http://localhost:5001/list?type=about")
+    fetch("https://temp-app-xi.vercel.app/api/list?type=about")
       .then((res) => res.json())
       .then((data) => setAbout(data[0] || { text: "", image: "" }));
 
-    fetch("http://localhost:5001/list?type=references")
+    fetch("https://temp-app-xi.vercel.app/api/list?type=references")
       .then((res) => res.json())
       .then((data) => setReferences(data));
 
-    fetch("http://localhost:5001/list?type=works")
+    fetch("https://temp-app-xi.vercel.app/api/list?type=works")
       .then((res) => res.json())
       .then((data) => setWorks(data));
   }, []);
 
   // Hakkımızda Güncelle
   const updateAbout = () => {
-    fetch("http://localhost:5001/update/about", {
+    fetch("https://temp-app-xi.vercel.app/api/update/about", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(about),
@@ -45,7 +45,7 @@ const AdminPanel = () => {
 
   // Referans Ekle
   const addReference = () => {
-    fetch("http://localhost:5001/add", {
+    fetch("https://temp-app-xi.vercel.app/api/add", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ type: "references", ...newReference }),
@@ -58,7 +58,7 @@ const AdminPanel = () => {
 
   // İş Ekle
   const addWork = () => {
-    fetch("http://localhost:5001/add", {
+    fetch("https://temp-app-xi.vercel.app/api/add", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ type: "works", ...newWork }),
@@ -71,7 +71,7 @@ const AdminPanel = () => {
 
   // Referans veya İş Sil
   const deleteItem = (id, type) => {
-    fetch(`http://localhost:5001/delete/${id}?type=${type}`, {
+    fetch(`https://temp-app-xi.vercel.app/api/delete/${id}?type=${type}`, {
       method: "DELETE",
     }).then((res) => res.json()).then((data) => {
       alert(data.message);
@@ -89,7 +89,7 @@ const AdminPanel = () => {
     formData.append("file", file);
 
     try {
-      const response = await fetch("http://localhost:5001/upload", {
+      const response = await fetch("https://temp-app-xi.vercel.app/api/upload", {
         method: "POST",
         body: formData,
       });
