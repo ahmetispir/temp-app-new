@@ -28,7 +28,7 @@ const Referanslar = () => {
 
   useEffect(() => {
     // Backend'den verileri çek
-    fetch(`${config.BASE_URL}/list?type=references`)
+    fetch(`/api/list?type=references`)
       .then((res) => res.json())
       .then((data) => setReferences(data))
       .catch((err) => console.error("Veri alınamadı:", err));

@@ -5,10 +5,8 @@ const Hakkimizda = () => {
   const [about, setAbout] = useState({ text: "", image: "" });
 
   useEffect(() => {
-    // fetch("http://localhost:5001/list?type=about")
-    //   .then((res) => res.json())
-    //   .then((data) => setAbout(data[0] || { text: "", image: "" }));
-    fetch(`${config.BASE_URL}/list?type=about`)
+  
+    fetch(`/api/list?type=about`)
     .then((res) => res.json())
     .then((data) => setData(data))
     .catch((err) => console.error("Veri alınamadı:", err));
