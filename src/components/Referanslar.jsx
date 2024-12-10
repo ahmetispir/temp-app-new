@@ -8,7 +8,7 @@ const Referanslar = () => {
 
   useEffect(() => {
     // Backend'den verileri çek
-    fetch("https://temp-app-xi.vercel.app/api/list?type=references")
+    fetch("/api/list?type=references")
       .then((res) => res.json())
       .then((data) => setReferences(data))
       .catch((err) => console.error("Veri alınamadı:", err));

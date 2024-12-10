@@ -21,22 +21,22 @@ const AdminPanel = () => {
 
   // Backend'den verileri çekme
   useEffect(() => {
-    fetch("https://temp-app-xi.vercel.app/api/list?type=about")
+    fetch("/api/list?type=about")
       .then((res) => res.json())
       .then((data) => setAbout(data[0] || { text: "", image: "" }));
 
-    fetch("https://temp-app-xi.vercel.app/api/list?type=references")
+    fetch("/api/list?type=references")
       .then((res) => res.json())
       .then((data) => setReferences(data));
 
-    fetch("https://temp-app-xi.vercel.app/api/list?type=works")
+    fetch("/api/list?type=works")
       .then((res) => res.json())
       .then((data) => setWorks(data));
   }, []);
 
   // Hakkımızda Güncelle
   const updateAbout = () => {
-    fetch("https://temp-app-xi.vercel.app/api/update/about", {
+    fetch("/api/update/about", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(about),
@@ -45,7 +45,7 @@ const AdminPanel = () => {
 
   // Referans Ekle
   const addReference = () => {
-    fetch("https://temp-app-xi.vercel.app/api/add", {
+    fetch("/api/add", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ type: "references", ...newReference }),
@@ -58,7 +58,7 @@ const AdminPanel = () => {
 
   // İş Ekle
   const addWork = () => {
-    fetch("https://temp-app-xi.vercel.app/api/add", {
+    fetch("/api/add", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ type: "works", ...newWork }),
@@ -71,7 +71,7 @@ const AdminPanel = () => {
 
   // Referans veya İş Sil
   const deleteItem = (id, type) => {
-    fetch(`https://temp-app-xi.vercel.app/api/delete/${id}?type=${type}`, {
+    fetch(`/api/delete/${id}?type=${type}`, {
       method: "DELETE",
     }).then((res) => res.json()).then((data) => {
       alert(data.message);
@@ -89,7 +89,7 @@ const AdminPanel = () => {
     formData.append("file", file);
 
     try {
-      const response = await fetch("https://temp-app-xi.vercel.app/api/upload", {
+      const response = await fetch("/api/upload", {
         method: "POST",
         body: formData,
       });

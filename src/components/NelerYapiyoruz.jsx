@@ -7,7 +7,7 @@ const NelerYapiyoruz = () => {
 
   useEffect(() => {
     // Backend'den verileri çek
-    fetch("https://temp-app-xi.vercel.app/api/list?type=works")
+    fetch("/api/list?type=works")
       .then((res) => res.json())
       .then((data) => setWorks(data))
       .catch((err) => console.error("Veri alınamadı:", err));

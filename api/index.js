@@ -11,8 +11,6 @@ const About = require("./models/About");
 const Reference = require("./models/Reference");
 const Work = require("./models/Work");
 
-const serverless = require("serverless-http"); // Vercel için gerekli adaptör
-
 const app = express();
 const router = express.Router();
 
@@ -25,7 +23,6 @@ mongoose.connect(process.env.MONGO_URI, {
 .catch((err) => console.error("MongoDB bağlantı hatası:", err));
 
 // Middleware
-// Middleware'ler
 app.use(cors());
 app.use(bodyParser.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
@@ -41,15 +38,10 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Login Endpoint
+// CRUD ve Login Endpoint'leri
 router.post("/login", (req, res) => {
   const { username, password } = req.body;
-
-  const adminUser = {
-    username: "admin",
-    password: "123456",
-  };
-
+  const adminUser = { username: "admin", password: "123456" };
   if (username === adminUser.username && password === adminUser.password) {
     res.json({ message: "Giriş başarılı!", token: "mock-jwt-token" });
   } else {
@@ -57,11 +49,9 @@ router.post("/login", (req, res) => {
   }
 });
 
-// CRUD Endpoints
 router.get("/list", async (req, res) => {
   try {
     const { type } = req.query;
-
     if (type === "about") {
       const about = await About.find();
       res.json(about);
@@ -89,49 +79,6 @@ router.put("/update/about", async (req, res) => {
   }
 });
 
-router.post("/add", async (req, res) => {
-  try {
-    const { type, ...data } = req.body;
-
-    if (type === "about") {
-      const about = new About(data);
-      await about.save();
-      res.json({ message: "Hakkımızda başarıyla eklendi!" });
-    } else if (type === "references") {
-      const reference = new Reference(data);
-      await reference.save();
-      res.json({ message: "Referans başarıyla eklendi!" });
-    } else if (type === "works") {
-      const work = new Work(data);
-      await work.save();
-      res.json({ message: "Yeni iş başarıyla eklendi!" });
-    } else {
-      res.status(400).json({ message: "Geçersiz veri türü!" });
-    }
-  } catch (err) {
-    res.status(500).json({ message: "Veri ekleme başarısız!", err });
-  }
-});
-
-router.delete("/delete/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { type } = req.query;
-
-    if (type === "references") {
-      await Reference.findByIdAndDelete(id);
-      res.json({ message: "Referans başarıyla silindi!" });
-    } else if (type === "works") {
-      await Work.findByIdAndDelete(id);
-      res.json({ message: "İş başarıyla silindi!" });
-    } else {
-      res.status(400).json({ message: "Geçersiz tip!" });
-    }
-  } catch (err) {
-    res.status(500).json({ message: "Silme işlemi başarısız oldu!", err });
-  }
-});
-
 router.post("/upload", upload.single("file"), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ message: "Dosya yüklenemedi!" });
@@ -141,12 +88,11 @@ router.post("/upload", upload.single("file"), (req, res) => {
 });
 
 // Kök Endpoint
-// Örnek Route
-router.get('/', (req, res) => {
-  res.json({ message: 'Backend çalışıyor!' });
+router.get("/", (req, res) => {
+  res.json({ message: "Backend çalışıyor!" });
 });
 
-// Vercel için Serverless Adaptörü
-app.use("/.netlify/functions/api", router); // Netlify örneği
-module.exports = app;
-module.exports.handler = serverless(app);
+app.use("/api", router);
+
+const PORT = process.env.PORT || 5001;
+app.listen(PORT, () => console.log(`Server çalışıyor: http://localhost:${PORT}`));

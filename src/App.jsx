@@ -85,7 +85,7 @@ const App = () => {
 
   useEffect(() => {
     // Backend'den referansları çekiyoruz
-    fetch(`https://temp-app-xi.vercel.app/api/list?type=references`) // Dinamik BASE_URL kullanımı
+    fetch("/api/list?type=references") // Dinamik BASE_URL kullanımı
       .then((res) => res.json())
       .then((data) => setReferences(data.slice(0, 4) || [])) // İlk 4 referansı al
       .catch((err) => console.error("Veri alınamadı:", err));
